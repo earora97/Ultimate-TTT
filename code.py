@@ -1,16 +1,6 @@
-import sys
-import random
-import signal
-import time
-import copy
 int min = -1000
 int max = 1000
-class TimedOutExc(Exception):
-	pass
 
-def handler(signum, frame):
-	#print 'Signal handler called with signal', signum
-	raise TimedOutExc()
 
 class My_Player():
 	def __init__(self):
@@ -42,13 +32,7 @@ def minimax(depth, nodeIndex, maximizingPlayer, alpha, beta):
 				break
 		return best
 
-class Board:
 
-	def __init__(self):
-		# board_status is the game board
-		# block status shows which blocks have been won/drawn and by which player
-		self.board_status = [['-' for i in range(16)] for j in range(16)]
-		self.block_status = [['-' for i in range(4)] for j in range(4)]
 
 	def best_move(self, old_move):
 
