@@ -44,8 +44,8 @@ class My_Player():
 					moveVal = minimax(board, 0, false, MAX,MIN)
 					bs[i][j] = '-'
 					if(moveVal > bestVal):
-	                	row = i
-	                	col = j
-	                	bestVal = moveVal
-	    print i,j,bestVal
-	    return [i,j,bestVal]
+						row = i
+						col = j
+						bestVal = moveVal
+		print i,j,bestVal
+		return [i,j,bestVal]
