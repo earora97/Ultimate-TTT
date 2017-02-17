@@ -6,7 +6,7 @@ class My_Player():
 		pass
 
 	def move(self, board, old_move, flag):
-		cells = self.best_move(old_move)
+		cells = self.best_move(old_move,board)
 		return cells
 
 	def minimax(depth, nodeIndex, maximizingPlayer, alpha, beta):
@@ -31,21 +31,40 @@ class My_Player():
 					break
 			return best
 
-	def best_move(self, old_move):
+	def best_move(self, old_move,board):
+		print "hello"
+		my_moves = []
+		my_block = [old_move[0]%4, old_move[1]%4]
 		bestVal = -1000
 		row=-1
 		col=-1
-		bs = self.block_status
-
-		for i in xrange(4):						#counts the blocks won by x, o and drawn blocks
-			for j in xrange(4):
-				if(bs[i][j] == '-'):
-					bs[i][j] = flag
-					moveVal = minimax(board, 0, false, MAX,MIN)
-					bs[i][j] = '-'
-					if(moveVal > bestVal):
-						row = i
-						col = j
-						bestVal = moveVal
-		print i,j,bestVal
-		return [i,j,bestVal]
+		bs = board.block_status
+		print bs
+		if old_move != (-1,-1) and bs[allowed_block[0]][allowed_block[1]] == '-':
+			print "if"
+			for i in range(4*my_block[0], 4*my_block[0]+4):
+				for j in range(4*my_block[1], 4*my_block[1]+4):
+					if bs[i][j] == '-':
+						bs[i][j] = flag
+						moveVal = minimax(board, 0, false, MAX,MIN)
+						bs[i][j] = '-'
+						if(moveVal > bestVal):
+							row = i
+							col = j
+							bestVal = moveVal
+		else:
+			print "else3"
+			for i in range(16):
+				for j in range(16):
+					if bs[i][j] == '-' and bs[i/4][j/4] == '-':
+						print "hiii"
+						bs[i][j] = flag
+						moveVal = minimax(board, 0, false, MAX,MIN)
+						bs[i][j] = '-'
+						if(moveVal > bestVal):
+							row = i
+							col = j
+							bestVal = moveVal
+		print "hi"
+		print i,j
+		return [(i,j)]

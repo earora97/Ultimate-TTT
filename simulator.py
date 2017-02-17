@@ -3,7 +3,8 @@ import random
 import signal
 import time
 import copy
-import code
+from code import *
+
 
 class TimedOutExc(Exception):
 	pass
@@ -20,7 +21,9 @@ class Random_Player():
 		#You have to implement the move function with the same signature as this
 		#Find the list of valid cells allowed
 		cells = board.find_valid_move_cells(old_move)
-		return cells[random.randrange(len(cells))]
+		randmove =  cells[random.randrange(len(cells))]
+		print randmove
+		return randmove
 
 class Manual_Player:
 	def __init__(self):
