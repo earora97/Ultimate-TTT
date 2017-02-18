@@ -1,6 +1,6 @@
 min = -1000
 max = 1000
-
+player = 'o'
 class My_Player():
 	def __init__(self):
 		pass
@@ -11,7 +11,7 @@ class My_Player():
 
 	def minimax(depth, nodeIndex, maximizingPlayer, alpha, beta):
 		if(maximizingPlayer):
-			best = MIN;
+			best = -1000;
 			for i in xrange(4):
 				val = minimax(depth+1,i+ 2*nodeIndex, false ,alpha,beta)
 				depth = max(best,val)
@@ -39,13 +39,12 @@ class My_Player():
 		row=-1
 		col=-1
 		bs = board.block_status
-		print bs
-		if old_move != (-1,-1) and bs[allowed_block[0]][allowed_block[1]] == '-':
-			print "if"
+		if old_move != (-1,-1) and bs[my_block[0]][my_block[1]] == '-':
 			for i in range(4*my_block[0], 4*my_block[0]+4):
 				for j in range(4*my_block[1], 4*my_block[1]+4):
 					if bs[i][j] == '-':
-						bs[i][j] = flag
+						print "loop"
+						bs[i][j] = player
 						moveVal = minimax(board, 0, false, MAX,MIN)
 						bs[i][j] = '-'
 						if(moveVal > bestVal):
