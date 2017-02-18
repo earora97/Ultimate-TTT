@@ -19,9 +19,7 @@ class Random_Player():
 		#You have to implement the move function with the same signature as this
 		#Find the list of valid cells allowed
 		cells = board.find_valid_move_cells(old_move)
-		randmove =  cells[random.randrange(len(cells))]
-		print randmove
-		return randmove
+		return cells[random.randrange(len(cells))]
 
 class Manual_Player:
 	def __init__(self):
@@ -188,6 +186,7 @@ def gameplay(obj1, obj2):				#game simulator
 
 		try:									#try to get player 1's move
 			p1_move = obj1.move(game_board, old_move, fl1)
+			print p1_move
 		except TimedOutExc:					#timeout error
 #			print e
 			WINNER = 'P2'
