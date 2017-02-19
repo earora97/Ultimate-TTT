@@ -1,8 +1,6 @@
-MIN = -1000
-MAX = 1000
-
 class My_Player():
 	def __init__(self):
+		self.cn=0
 		pass
 	def min(self,a,b):
 		if(a<=b):
@@ -15,80 +13,92 @@ class My_Player():
 		else:
 			return b
 	def move(self, board, old_move, flag):
-		next_move = self.minimax(0,0, False, 1000,-1000,board)
+		print "Old Move:"
+		print old_move
+		self.cn=0
+		next_move = self.minimax(old_move, False, 1000,-1000,board,flag)
 		return next_move
 	
-	def minimax(self,depth, maximizingPlayer, alpha, beta,board):
-		cells = self.find_valid_cells(old_move,board)
+	def minimax(self,old_move, maximizingPlayer, alpha, beta,board,flag):
+		#did u win the game ,if yes it is a leaf node
+		hvalue	= self.check_win(board,flag)
+		print hvalue
+		if(hvalue == 'o'):
+			return 10
+		elif(hvalue == 'x'):
+			return -10
+		elif(hvalue == 'd'):
+			return 0
+		cells = board.find_valid_move_cells(old_move)	
+		print "Valid moves:"
+		print cells
 		for mycell in cells:
-			bestVal = -1000
 			best_move = (-1,-1)
+			myblock = [mycell[0]%4, mycell[0]%4]	
 			board.board_status[mycell[0]][mycell[1]] = flag
-			winlose = self.check_win(board,flag)
+			#did u win the block u placed the flag in
+			#if yes change block_status
+			winlose = self.check_block(board,flag,myblock)
 			print winlose
 			if(winlose):
-				board.block_status = flag
+				board.block_status[myblock[0]][myblock[1]] = flag
 			if(maximizingPlayer):
 				best = -1000;
-				for k in xrange(4):
-					val, new_move = self.minimax(depth+1, False ,alpha,beta,board)
-					depth = self.max(best,val)
-					if best < val:
-						best = val
-						best_move=mycell
-					alpha = self.max(alpha,best)
-					if(beta<=alpha):
-						break
+				val, new_move = self.minimax(mycell, False ,alpha,beta,board,flag)
+				board.board_status[mycell[0]][mycell[1]] = '-'
+				if best < val:
+					best = val
+					best_move=mycell
+				alpha = self.max(alpha,best)
+				if(beta<=alpha):
+					break
 				return best, best_move
 			else:
-				best = MAX;
-				for k in xrange(4):
-					val, new_move = self.minimax(depth+1,True ,alpha,beta,board)
-					depth = self.min(best,val)
-					if best > val:
-						best = val
-						best_move=mycell
-					alpha = self.min(alpha,best)
-					if(beta<=alpha):
-						break
+				best = 1000;
+				val, new_move = self.minimax(mycell,True ,alpha,beta,board,flag)
+				board.board_status[mycell[0]][mycell[1]] = '-'
+				if best > val:
+					best = val
+					best_move=mycell
+				alpha = self.min(alpha,best)
+				if(beta<=alpha):
+					break
 				return best, best_move			
-		board.board_status[i][j] = '-'
-		
-
-	def find_valid_cells(self, old_move,board):
-		#returns the valid cells allowed given the last move and the current board state
-		allowedcells = []
-		allowed_block = [old_move[0]%4, old_move[1]%4]
-		#checks if the move is a free move or not based on the rules
-
-		if old_move != (-1,-1) and board.block_status[allowed_block[0]][allowed_block[1]] == '-':
-			for i in range(4*allowed_block[0], 4*allowed_block[0]+4):
-				for j in range(4*allowed_block[1], 4*allowed_block[1]+4):
-					if board.board_status[i][j] == '-':
-						allowedcells.append((i,j))
-		else:
-			for i in range(16):
-				for j in range(16):
-					if board.board_status[i][j] == '-' and board.block_status[i/4][j/4] == '-':
-						allowedcells.append((i,j))
-		return allowedcells
 
 	def check_win(self,board,flag):
-		
-		bs = board.block_status
-		answer =  False
-		for i in range(4):
-			row = bs[i]							#i'th row
-			col = [x[i] for x in bs]			#i'th column
-			#print row,col
-			#checking if i'th row or i'th column has been won or not
-			if (row[0] == flag) and (row.count(row[0]) == 4):
-				answer = True
-			if (col[0] == flag) and (col.count(col[0]) == 4):
-				answer = True
-		#checking if diagnols have been won or not
-		if(bs[0][0] == bs[1][1] == bs[2][2] ==bs[3][3]) and (bs[0][0] == flag):
-			answer = True
-		if(bs[0][3] == bs[1][2] == bs[2][1] ==bs[3][0]) and (bs[0][3] == flag):
-			answer = True
-		return answer
+		self.cn+=1
+		if self.cn>30:
+			return True
+		whowonorlost = board.find_terminal_state()
+		return whowonorlost[1]
+
+	def check_block(self,board,flag,myblock):
+		print "ho there"
+		bs = board.board_status
+		a = 4*myblock[0]
+		b = 4*myblock[1]
+		#diagonals
+		if(bs[a][b] ==  bs[a+1][b+1] == bs[a+2][b+2] ==bs[a+3][b+3] == flag):
+			return True
+		elif(bs[a][b+3] == bs[a+1][b+2] == bs[a+2][b+1] ==bs[a+3][b] == flag):
+			return True
+		#columns
+		elif(bs[a][b] == bs[a][b+1] == bs[a][b+2] ==bs[a][b+3] == flag):
+			return True
+		elif(bs[a+1][b] == bs[a+1][b+1] == bs[a+1][b+2] ==bs[a+1][b+3] == flag):
+			return True
+		elif(bs[a+2][b] == bs[a+2][b+1] == bs[a+2][b+2] ==bs[a+2][b+3] == flag):
+			return True
+		elif(bs[a+3][b] == bs[a+3][b+1] == bs[a+3][b+2] ==bs[a+3][b+3] == flag):
+			return True
+
+		#rows
+		elif(bs[a][b] == bs[a+1][b] == bs[a+2][b] ==bs[a+3][b] == flag):
+			return True
+		elif(bs[a][b+1] == bs[a+1][b+1] == bs[a+2][b+1] ==bs[a+3][b+1] == flag):
+			return True
+		elif(bs[a][b+2] == bs[a+1][b+2] == bs[a+2][b+2] ==bs[a+3][b+2] == flag):
+			return True
+		elif(bs[a][b+3] == bs[a+1][b+3] == bs[a+2][b+3] ==bs[a+3][b+3] == flag):
+			return True
+		return False

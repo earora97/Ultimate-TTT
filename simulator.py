@@ -4,6 +4,7 @@ import signal
 import time
 import copy
 from code import *
+
 class TimedOutExc(Exception):
 	pass
 
