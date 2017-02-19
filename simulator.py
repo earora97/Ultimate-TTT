@@ -225,7 +225,6 @@ def gameplay(obj1, obj2):				#game simulator
 			WINNER = 'NONE'
 			MESSAGE = 'DRAW'
 			break
-
 		old_move = p1_move
 		game_board.print_board()
 
