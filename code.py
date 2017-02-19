@@ -15,11 +15,12 @@ class My_Player():
 	def move(self, board, old_move, flag):
 		print "Old Move:" , old_move
 		self.cn=0
-		value,next_move = self.minimax(old_move, False, 1000,-1000,board)
+		value,next_move = self.minimax(old_move, False, -1000,1000,board)
 		return next_move
 	
 	def minimax(self,old_move, maximizingPlayer, alpha, beta,board):
 		#did u win the game ,if yes it is a leaf node
+		print "Minimax"
 		board.print_board()
 		if(maximizingPlayer):
 			flag = 'x'
@@ -53,10 +54,7 @@ class My_Player():
 				board.block_status[myblock[0]][myblock[1]] = flag
 			if(maximizingPlayer):
 				best = -1000
-				
 				val, new_move = self.minimax(mycell, False ,alpha,beta,board)
-				
-				
 				board.board_status[mycell[0]][mycell[1]] = '-'
 				if best < val:
 					best = val
@@ -72,14 +70,16 @@ class My_Player():
 				if best > val:
 					best = val
 					best_move=mycell
-				beta = self.min(alpha,best)
+				print best
+				print best_move
+				beta = self.min(beta,best)
 				if(beta<=alpha):
 					break
 				return best, best_move
 
 	def check_win(self,board,flag):
 		self.cn+=1
-		if self.cn>2:
+		if self.cn>1:
 			return 'o'
 		whowonorlost = board.find_terminal_state()
 		return whowonorlost[0]
