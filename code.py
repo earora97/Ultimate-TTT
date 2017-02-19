@@ -79,6 +79,7 @@ class My_Player():
 				return best, best_move
 		return best,None
 
+
 	def check_win(self,board,flag):
 		self.cn+=1
 		if self.cn>4:

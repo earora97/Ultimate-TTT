@@ -213,6 +213,7 @@ def gameplay(obj1, obj2):				#game simulator
 			pts2 = 16
 			break
 
+
 		status = game_board.find_terminal_state()		#find if the game has ended and if yes, find the winner
 		print status
 		if status[1] == 'WON':							#if the game has ended after a player1 move, player 1 would win
