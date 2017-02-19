@@ -54,6 +54,7 @@ class My_Player():
 				best = -1000
 				val, new_move = self.minimax(mycell, False ,alpha,beta,board)
 				board.board_status[mycell[0]][mycell[1]] = '-'
+				board.block_status[myblock[0]][myblock[1]] = '-'
 				if best < val:
 					best = val
 					best_move=mycell
@@ -65,6 +66,7 @@ class My_Player():
 				best = 1000
 				val, new_move = self.minimax(mycell,True ,alpha,beta,board)
 				board.board_status[mycell[0]][mycell[1]] = '-'
+				board.block_status[myblock[0]][myblock[1]] = '-'
 				if best > val:
 					best = val
 					best_move=mycell
@@ -77,7 +79,7 @@ class My_Player():
 
 	def check_win(self,board,flag):
 		self.cn+=1
-		if self.cn>30:
+		if self.cn>4:
 			return 'o'
 		whowonorlost = board.find_terminal_state()
 		return whowonorlost[0]

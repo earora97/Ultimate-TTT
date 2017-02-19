@@ -235,6 +235,7 @@ def gameplay(obj1, obj2):				#game simulator
 
 		try:
 			p2_move = obj2.move(game_board, old_move, fl2)
+			print "P2 move", p2_move
 		except TimedOutExc:
 			WINNER = 'P1'
 			MESSAGE = 'TIME OUT'
