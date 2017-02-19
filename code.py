@@ -20,8 +20,7 @@ class My_Player():
 	
 	def minimax(self,old_move, maximizingPlayer, alpha, beta,board):
 		#did u win the game ,if yes it is a leaf node
-		print "Minimax"
-		board.print_board()
+		#board.print_board()
 		if(maximizingPlayer):
 			flag = 'x'
 		else:
@@ -30,7 +29,6 @@ class My_Player():
 		hvalue	= self.check_win(board,flag)
 		print "Hvalue:",hvalue
 		if(hvalue == 'o'):
-			print "Hiiiiii:"
 			return 10,None
 		elif(hvalue == 'x'):
 			return -10 , None
@@ -79,7 +77,7 @@ class My_Player():
 
 	def check_win(self,board,flag):
 		self.cn+=1
-		if self.cn>1:
+		if self.cn>30:
 			return 'o'
 		whowonorlost = board.find_terminal_state()
 		return whowonorlost[0]
