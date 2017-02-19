@@ -29,7 +29,7 @@ class My_Player():
 		hvalue	= self.check_win(board,flag)
 		print "Hvalue:",hvalue
 		if(hvalue == 'o'):
-			print "Hiiiiii:",best_move
+			print "Hiiiiii:"
 			return 10,None
 		elif(hvalue == 'x'):
 			return -10 , None
@@ -40,8 +40,10 @@ class My_Player():
 	#	print "Valid moves:"
 	#	print cells
 		for mycell in cells:
+			print "Mycell:",mycell
 			best_move = None
 			myblock = [mycell[0]//4, mycell[1]//4]	
+			print myblock
 			board.board_status[mycell[0]][mycell[1]] = flag
 			#did u win the block u placed the flag in
 			#if yes change block_status
@@ -77,7 +79,7 @@ class My_Player():
 
 	def check_win(self,board,flag):
 		self.cn+=1
-		if self.cn>30:
+		if self.cn>2:
 			return 'o'
 		whowonorlost = board.find_terminal_state()
 		return whowonorlost[0]
