@@ -37,8 +37,8 @@ class My_Player():
 			return 0, None
 
 		cells = board.find_valid_move_cells(old_move)	
-		print "Valid moves:"
-		print cells
+		#print "Valid moves:"
+		#print cells
 		for mycell in cells:
 			print "Mycell:",mycell
 			best_move = None
