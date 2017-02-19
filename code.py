@@ -17,6 +17,7 @@ class My_Player():
 		self.cn=0
 		value,next_move = self.minimax(old_move, False, -1000,1000,board)
 		return next_move
+
 	
 	def minimax(self,old_move, maximizingPlayer, alpha, beta,board):
 		#did u win the game ,if yes it is a leaf node
@@ -36,8 +37,8 @@ class My_Player():
 			return 0, None
 
 		cells = board.find_valid_move_cells(old_move)	
-	#	print "Valid moves:"
-	#	print cells
+		print "Valid moves:"
+		print cells
 		for mycell in cells:
 			print "Mycell:",mycell
 			best_move = None
@@ -76,6 +77,7 @@ class My_Player():
 				if(beta<=alpha):
 					break
 				return best, best_move
+		return best,None
 
 	def check_win(self,board,flag):
 		self.cn+=1
