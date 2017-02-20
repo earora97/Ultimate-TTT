@@ -20,13 +20,12 @@ class My_Player():
 
 	
 	def minimax(self,old_move, maximizingPlayer, alpha, beta,board):
-		#did u win the game ,if yes it is a leaf node
-		#board.print_board()
 		if(maximizingPlayer):
 			flag = 'x'
+			best=-1000
 		else:
 			flag = 'o'
-		
+			best=1000
 		hvalue	= self.check_win(board,flag)
 		print "Hvalue:",hvalue
 		if(hvalue == 'o'):
@@ -35,13 +34,12 @@ class My_Player():
 			return -10 , None
 		elif(hvalue == 'NONE'):
 			return 0, None
-
 		cells = board.find_valid_move_cells(old_move)	
-		#print "Valid moves:"
-		#print cells
+		print "Valid moves:"
+		print cells	
+		best_move = None
 		for mycell in cells:
 			print "Mycell:",mycell
-			best_move = None
 			myblock = [mycell[0]//4, mycell[1]//4]	
 			print myblock
 			board.board_status[mycell[0]][mycell[1]] = flag
@@ -52,7 +50,6 @@ class My_Player():
 			if(winlose):
 				board.block_status[myblock[0]][myblock[1]] = flag
 			if(maximizingPlayer):
-				best = -1000
 				val, new_move = self.minimax(mycell, False ,alpha,beta,board)
 				board.board_status[mycell[0]][mycell[1]] = '-'
 				board.block_status[myblock[0]][myblock[1]] = '-'
@@ -62,9 +59,7 @@ class My_Player():
 				alpha = self.max(alpha,best)
 				if(beta<=alpha):
 					break
-				return best,best_move
 			else:
-				best = 1000
 				val, new_move = self.minimax(mycell,True ,alpha,beta,board)
 				board.board_status[mycell[0]][mycell[1]] = '-'
 				board.block_status[myblock[0]][myblock[1]] = '-'
@@ -76,13 +71,16 @@ class My_Player():
 				beta = self.min(beta,best)
 				if(beta<=alpha):
 					break
-				return best, best_move
-		return best,None
+		try:
+			return best,best_move
+		except Exception as e:
+			print e
+		
 
 
 	def check_win(self,board,flag):
 		self.cn+=1
-		if self.cn>4:
+		if self.cn>40:
 			return 'o'
 		whowonorlost = board.find_terminal_state()
 		return whowonorlost[0]
