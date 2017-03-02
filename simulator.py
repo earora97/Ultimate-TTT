@@ -3,6 +3,7 @@ import random
 import signal
 import time
 import copy
+import numpy
 from code import *
 
 class TimedOutExc(Exception):
