@@ -10,7 +10,9 @@ possible_wins = ([[(0,0),(0,1),(0,2),(0,3)],
 				[(0,0),(1,1),(2,2),(3,3)],
 				[(3,0),(2,1),(1,2),(0,3)],
 				]) 
-value_arr = ([[0, -10,-50,-100,-500],[10, 0,0,0],[50,0,0,0],[100,0,0,0],[500,0,0,0]])
+value_arr = ([[0, -10,-50,-150,-200],[10, 0,0,0],[50,0,0,0],[150,0,0,0],[200,0,0,0]])
+block_arr = ([[0, -100,-200,-300,-400],[100, 0,0,0],[200,0,0,0],[300,0,0,0],[400,0,0,0]])
+
 block_vals = [[0 for x in range(4)] for y in range(4)] 
 final_block = [[0 for x in range(4)] for y in range(4)] 
 
@@ -31,17 +33,16 @@ class My_Player():
 	def move(self, board, old_move, flag):
 		print "Old Move:" , old_move
 		self.cn=0
+		block_vals = final_block
 		value,next_move = self.minimax(old_move, False, -1000,1000,board)
+		final_block[old_move[0]//4][old_move[1]//4] = value
 		return next_move
 
 	def evaluate(self,board,maximizingPlayer,old_move):		
-		block_vals = final_block
-		if(maximizingPlayer):
-			Me = 'x'
-			Opp = 'o'
-		else:
-			Me = 'o'
-			Opp = 'x'
+		print "Evaluate"
+		print "Final_block:",final_block
+		print "now:",block_vals
+
 		val = 0
 		finalval =0 
 		myblock = [old_move[0]//4, old_move[1]//4]	
@@ -52,29 +53,33 @@ class My_Player():
 			others=0
 			for j in xrange(4):
 				piece = board.board_status[tmp1+possible_wins[i][j][0]][tmp2+possible_wins[i][j][1]]
-				if(piece == Me):
+				if(piece == 'o'):
 					players += 1
-				elif(piece == Opp):
+				elif(piece == 'x'):
 					others += 1
 			val += value_arr[players][others]
-
+		print "Val:",val
 		block_vals[myblock[0]][myblock[1]] = val
 		for i in xrange(10):
 			players=0
 			others=0
 			for j in xrange(4):
 				piece = board.block_status[possible_wins[i][j][0]][possible_wins[i][j][1]]
-				if(piece == Me):
+				print "piece:",piece
+				if(piece == 'o'):
 					players += 1
-				elif(piece == Opp):
+				elif(piece == 'x'):
 					others += 1
 			try:
 				finalval += block_vals[players][others]
 			except Exception as e:
 				print e
+		print "Finalval:",finalval
 		return finalval
 
 	def minimax(self,old_move, maximizingPlayer, alpha, beta,board):
+		print "Minimax"
+		board.print_board()
 		if(maximizingPlayer):
 			flag = 'x'
 			best=-1000
@@ -82,24 +87,21 @@ class My_Player():
 			flag = 'o'
 			best=1000
 		hvalue	= self.check_win(board,flag)
-	#	print "Hvalue:",hvalue
-
+		score = self.evaluate(board,maximizingPlayer,old_move)
+		print "Score:" , score
+		print "Hvalue:",hvalue
 		if(hvalue == 'o'):
 			return 100,None
-			final_block[old_move[0]//4][old_move[1]//4] == score
 		elif(hvalue == 'x'):
 			return -100 , None
-			final_block[old_move[0]//4][old_move[1]//4] == score
 		elif(hvalue == 'NONE'):
 			return 0, None
-			final_block[old_move[0]//4][old_move[1]//4] == score
-		score = self.evaluate(board,maximizingPlayer,old_move)
-		#print "Score:" , score
+		
 		cells = board.find_valid_move_cells(old_move)	
-	#	print "Valid moves:",cells
+		print "Valid moves:",cells
 		best_move = None
 		for mycell in cells:
-			#print "Mycell:",mycell
+			print "Mycell:",mycell
 			myblock = [mycell[0]//4, mycell[1]//4]	
 	#		print myblock
 			board.board_status[mycell[0]][mycell[1]] = flag
@@ -130,6 +132,7 @@ class My_Player():
 				beta = self.min(beta,best)
 				if(beta<=alpha):
 					break
+		print score,best_move
 		return score,best_move
 		
 
