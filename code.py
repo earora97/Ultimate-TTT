@@ -138,8 +138,7 @@ class My_Player():
 
 
 	def check_win(self,board,flag):
-		print "counter",self.cn
-		if self.cn>2:
+		if self.cn>1:
 			return 'o'
 		self.cn+=1
 		whowonorlost = board.find_terminal_state()
