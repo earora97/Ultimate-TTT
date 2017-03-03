@@ -61,10 +61,16 @@ class My_Player():
 			players=0
 			others=0
 			for j in xrange(4):
-				if(block_vals[[i][j][0]][[i][j][1]] < -100):
-					others += 1
-				elif(block_vals[[i][j][0]][[i][j][1]] > 100):
-					players += 1
+		#		piece = board.block_status[possible_wins[i][j][0]][possible_wins[i][j][1]]
+		#		print "piece:",piece
+				try:
+					if(block_vals[possible_wins[i][j][0]][possible_wins[i][j][1]] < -100):
+						others += 1
+					elif(block_vals[possible_wins[i][j][0]][possible_wins[i][j][1]] > 100):
+							players += 1
+				except Exception as e:
+					print e
+				
 			finalval += value_arr[players][others]
 		print "Finalval:",finalval
 		return val,finalval
