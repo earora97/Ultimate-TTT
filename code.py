@@ -61,8 +61,6 @@ class My_Player():
 			players=0
 			others=0
 			for j in xrange(4):
-		#		piece = board.block_status[possible_wins[i][j][0]][possible_wins[i][j][1]]
-		#		print "piece:",piece
 				try:
 					if(block_vals[possible_wins[i][j][0]][possible_wins[i][j][1]] < -100):
 						others += 1
@@ -77,6 +75,7 @@ class My_Player():
 
 	def minimax(self,old_move, maximizingPlayer, alpha, beta,board):
 		print "Minimax"
+		#print "counter here",self.cn
 		board.print_board()
 		if(maximizingPlayer):
 			flag = 'x'
@@ -133,14 +132,16 @@ class My_Player():
 				if(beta<=alpha):
 					break
 		print fscore,best_move
+		self.cn -= 1
 		return fscore,best_move
 		
 
 
 	def check_win(self,board,flag):
-		self.cn+=1
+		print "counter",self.cn
 		if self.cn>2:
 			return 'o'
+		self.cn+=1
 		whowonorlost = board.find_terminal_state()
 		return whowonorlost[0]
 
