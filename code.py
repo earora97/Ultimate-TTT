@@ -71,7 +71,7 @@ class My_Player():
 				elif(piece == 'x'):
 					others += 1
 			try:
-				finalval += block_vals[players][others]
+				finalval += block_arr[players][others]
 			except Exception as e:
 				print e
 		print "Finalval:",finalval
